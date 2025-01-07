@@ -27,7 +27,7 @@ const tripSchema = new Schema({
     hostId: {
         type: Schema.Types.ObjectId, // Reference type
         ref: 'User',                // Reference to the User model
-        required: false,
+        required: true,
     },
     guestIds: [{
         type: Schema.Types.ObjectId, // Reference type
@@ -37,11 +37,11 @@ const tripSchema = new Schema({
     totalseats: Number,
     source: {
         type: String,
-        require: false
+        require: true
     },
     destination: {
         type: String,
-        require: false
+        require: true
     },
     price:{
         type: Number,

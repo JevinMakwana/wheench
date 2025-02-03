@@ -1,4 +1,5 @@
-const mongoose  = require("mongoose");
+const mongoose = require("mongoose");
+const { boolean } = require("zod");
 
 const Schema = mongoose.Schema;
 const ObjectId = mongoose.Types.ObjectId;
@@ -24,6 +25,11 @@ const userSchema = new Schema({
 }, { timestamps: true });
 
 const tripSchema = new Schema({
+    live: {
+        type: Boolean,
+        required: false,
+        default: true
+    },
     hostId: {
         type: Schema.Types.ObjectId, // Reference type
         ref: 'User',                // Reference to the User model
@@ -43,22 +49,22 @@ const tripSchema = new Schema({
         type: String,
         require: true
     },
-    price:{
+    price: {
         type: Number,
         require: false
     },
-    takofftime:{
+    takofftime: {
         type: Date,
         required: false
     },
-    car:{
+    car: {
         type: String,
         required: false
     },
-    describtion:{
+    describtion: {
         type: String,
         required: false
-    }    
+    }
 }, { timestamps: true });
 
 

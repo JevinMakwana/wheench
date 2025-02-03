@@ -5,9 +5,9 @@ const { userMiddlware } = require("../middleware/userMiddleware");
 const hostRouter = Router();
 
 // create a trip
-hostRouter.post('/trip', userMiddlware,async (req, res) => {
+hostRouter.post('/trip', userMiddlware, async (req, res) => {
     const userId = req.userId;
-    const user = await userModel.findById({_id: userId});
+    const user = await userModel.findById({ _id: userId });
     console.log(user, "<-----user fond is");
     if (!user) {
         return res.status(404).json({ success: false, message: "User not found" });
@@ -22,27 +22,27 @@ hostRouter.post('/trip', userMiddlware,async (req, res) => {
         });
     }
 
-    const { 
-        totalseats, 
-        source, 
-        destination, 
-        takeofftime, 
-        price, 
+    const {
+        totalseats,
+        source,
+        destination,
+        takeofftime,
+        price,
         car } = req.body;
-    
+
     const creatTripRes = await tripModel.create({
         hostId: userId,
-        totalseats, 
-        source, 
-        destination, 
-        takeofftime, 
-        price, 
+        totalseats,
+        source,
+        destination,
+        takeofftime,
+        price,
         car
     });
     // const trips = await tripModel.find();
 
-    const updatedUser   = await userModel.findByIdAndUpdate(
-        userId, 
+    const updatedUser = await userModel.findByIdAndUpdate(
+        userId,
         { hostingTripId: creatTripRes._id },
         { new: true }
     );
@@ -54,12 +54,47 @@ hostRouter.post('/trip', userMiddlware,async (req, res) => {
     })
 });
 
-hostRouter.get('/trip', async (req, res) => {
-    const trips = await tripModel.find({});
+// get all live-trips
+hostRouter.get('/trip', userMiddlware, async (req, res) => {
+    const trips = await tripModel.find({ live: true });
 
     return res.json({
         trips
     })
+});
+
+// complete a trip
+hostRouter.post('/trip/complete', userMiddlware, async (req, res) => {
+    const userId = req.userId;
+    const user = await userModel.findById({ _id: userId });
+    console.log(user, "<-----user fond is");
+    if (!user) {
+        return res.status(404).json({ success: false, message: "User not found" });
+    }
+    console.log(user, "<-----user found");
+
+    if (!user.hostingTripId) {
+        return res.status(400).json({
+            errro: "Bad request: there's none trip to be completed"
+        })
+    };
+
+    const updatedTrip = await tripModel.findByIdAndUpdate(
+        user.hostingTripId,
+        { live: false }
+    );
+
+    const updatedUser = await userModel.findByIdAndUpdate(
+        userId,
+        { hostingTripId: null }
+    );
+
+    return res.json({
+        success: true,
+        message: "Congrats on completing the trip!",
+        user: updatedUser
+    })
+
 });
 
 module.exports = {

@@ -17,11 +17,11 @@ const userSchema = new Schema({
         ref: 'Trip',                // Reference to the Trip model
         required: false,
     },
-    attendingTripId: [{
+    attendingTripId: {
         type: Schema.Types.ObjectId, // Reference type
         ref: 'Trip',                // Reference to the Trip model
         required: false,
-    }],
+    },
 }, { timestamps: true });
 
 const tripSchema = new Schema({

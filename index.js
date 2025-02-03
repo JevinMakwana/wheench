@@ -5,13 +5,14 @@ const mongoose = require("mongoose");
 
 const { hostRouter } = require('./routes/host');
 const { authRouter } = require('./routes/auth');
-
+const { guestRouter } = require('./routes/guest');
 
 const app = express();
 app.use(express.json());
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/host", hostRouter);
+app.use("/api/v1/guest", guestRouter);
 
 const main = async () => {
     await mongoose.connect(process.env.MONGO_URL);

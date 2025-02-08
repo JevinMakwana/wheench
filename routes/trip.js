@@ -12,6 +12,21 @@ tripRouter.get('', async (req, res) => {
     })
 });
 
+tripRouter.get("/:tripId", async (req, res) => {
+    const { tripId } = req.params;
+
+    try {
+        const trip = await tripModel.findById(tripId);
+        if (!trip) {
+            return res.status(404).json({ error: "Trip not found" });
+        }
+        return res.json(trip);
+    } catch (error) {
+        return res.status(500).json({ error: "Invalid trip ID or server error" });
+    }
+});
+
+
 module.exports = {
     tripRouter
 }

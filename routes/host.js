@@ -54,14 +54,6 @@ hostRouter.post('/trip', userMiddlware, async (req, res) => {
     })
 });
 
-// get all live-trips
-hostRouter.get('/trip', userMiddlware, async (req, res) => {
-    const trips = await tripModel.find({ live: true });
-
-    return res.json({
-        trips
-    })
-});
 
 // complete a trip
 hostRouter.post('/trip/complete', userMiddlware, async (req, res) => {

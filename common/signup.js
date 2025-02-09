@@ -14,7 +14,7 @@ const signup = async (req, model) => {
     }
 
     try {
-        const { email, password, username, firstName, lastName, phone } = req.body;
+        const { email, password, username, full_name, phone, gender } = req.body;
 
         // Check if email already exists
         const isEmailAlreadyExist = await model.findOne({ email });
@@ -34,10 +34,12 @@ const signup = async (req, model) => {
             email,
             password: hashedPassword,
             username,
-            firstName,
-            lastName,
-            phone
+            full_name,
+            phone,
+            gender
         });
+
+        console.log(newUser, '<<-------------newUser')
 
         return {
             status: 201,
@@ -45,8 +47,7 @@ const signup = async (req, model) => {
             data: {
                 id: newUser._id,
                 email: newUser.email,
-                firstName: newUser.firstName,
-                lastName: newUser.lastName
+                full_name: newUser.full_name,
             }
         };
     } catch (error) {

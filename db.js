@@ -8,10 +8,14 @@ const ObjectId = mongoose.Types.ObjectId;
 const userSchema = new Schema({
     email: { type: String, unique: false, match: /.+\@.+\..+/ },
     password: String,
-    username: String,
-    firstName: String,
-    lastName: String,
-    phone: String,
+    username: { type: String, unique: true, required: true },
+    full_name: String,
+    gender: {
+        type: String,
+        enum: [ "male", "female", "other"],
+        required: true,
+    },
+    phone: { type: String, unique: true, required: true },
     hostingTripId: {
         type: Schema.Types.ObjectId, // Reference type
         ref: 'Trip',                // Reference to the Trip model

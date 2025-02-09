@@ -17,7 +17,10 @@ authRouter.post('/signup', async (req, res) => {
         })
     }
     return res.json({
-        message: signupResponse.successMessage
+        status: signupResponse.status,
+        message: signupResponse.successMessage,
+        data: signupResponse.data
+
     })
 });
 

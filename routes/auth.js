@@ -46,7 +46,8 @@ authRouter.post("/signin", async (req, res) => {
         console.log('generated Token:', token);
 
         return res.json({
-            token
+            token,
+            user
         });
 
     } else {

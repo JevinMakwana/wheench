@@ -59,7 +59,7 @@ const tripSchema = new Schema({
     },
     takofftime: {
         type: Date,
-        required: false
+        required: true
     },
     car: {
         type: String,
@@ -71,6 +71,18 @@ const tripSchema = new Schema({
     }
 }, { timestamps: true });
 
+// Define a virtual field for `hostInfo`
+tripSchema.virtual('hostInfo', {
+    ref: 'User', // The model to populate from
+    localField: 'hostId', // The field in •tripschema*
+    foreignField: '_id', // The matching field in model
+    justOne: true // Ensures it returns a single object, not an array
+});
+tripSchema.index({ source: 1, destination: 1, takeofftime: 1 });
+
+// Ensure virtuals are included in JSON output
+tripSchema.set('toObject', { virtuals: true });
+tripSchema.set('toJSON', { virtuals: true });
 
 const userModel = mongoose.model("User", userSchema);
 const tripModel = mongoose.model("Trip", tripSchema);

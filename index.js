@@ -1,8 +1,8 @@
-require('dotenv').config()
+require('dotenv').config();
 
 const express = require("express");
 const mongoose = require("mongoose");
-const cors = require("cors")
+const cors = require("cors");
 const { hostRouter } = require('./routes/host');
 const { authRouter } = require('./routes/auth');
 const { guestRouter } = require('./routes/guest');
@@ -15,7 +15,7 @@ app.use(express.json());
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/host", hostRouter);
 app.use("/api/v1/guest", guestRouter);
-app.use("/api/v1/trips", tripRouter)
+app.use("/api/v1/trips", tripRouter);
 
 const main = async () => {
     await mongoose.connect(process.env.MONGO_URL);

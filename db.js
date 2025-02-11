@@ -57,7 +57,7 @@ const tripSchema = new Schema({
         type: Number,
         require: false
     },
-    takofftime: {
+    takeofftime: {
         type: Date,
         required: true
     },

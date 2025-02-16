@@ -28,15 +28,17 @@ authRouter.post("/signin", async (req, res) => {
     const { email, password } = req.body;
 
     const user = await userModel.findOne({ email });
+    console.log(email, password, user,'<------------');
 
     if (!user) {
         console.log("User not found.")
-        return res.status(403).json({
+        return res.json({
             message: "User not found.",
         });
     }
 
     const passwordCheck = await bcrypt.compare(password, user.password);
+    delete user.password; 
 
     if (passwordCheck) {
         const token = jwt.sign({
@@ -44,7 +46,6 @@ authRouter.post("/signin", async (req, res) => {
         }, JWT_USER_SECRET);
 
         console.log('generated Token:', token);
-
         return res.json({
             token,
             user

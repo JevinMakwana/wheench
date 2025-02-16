@@ -7,6 +7,7 @@ const { hostRouter } = require('./routes/host');
 const { authRouter } = require('./routes/auth');
 const { guestRouter } = require('./routes/guest');
 const { tripRouter } = require('./routes/trip');
+const { userRouter } = require('./routes/user');
 
 const app = express();
 app.use(cors());
@@ -16,6 +17,7 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/host", hostRouter);
 app.use("/api/v1/guest", guestRouter);
 app.use("/api/v1/trips", tripRouter);
+app.use("/api/v1/user", userRouter);
 
 const main = async () => {
     await mongoose.connect(process.env.MONGO_URL);

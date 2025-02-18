@@ -10,14 +10,20 @@ userRouter.get('/my-info', userMiddlware, async (req, res) => {
     try {
         const user = await userModel.findById({ _id: userId }).select('-password').populate('hostingTripId');
         if (!user) {
-            return res.status(404).json({ success: false, message: "User not found" });
+            return res.status(404).json({ 
+                statusText: "fail", 
+                message: "User not found" 
+            });
         }
-        console.log(user, '<-----my-info');
         return res.json({
-            user
+            statusText: "success",
+            data: user
         })
     } catch (error) {
-        return res.status(500).json({ success: false, message: "Server error" });
+        return res.status(500).json({ 
+            statusText: "fail", 
+            message: "Server error" 
+        });
     }
 });
 

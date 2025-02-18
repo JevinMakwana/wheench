@@ -8,16 +8,17 @@ const hostRouter = Router();
 hostRouter.post('/trip', userMiddlware, async (req, res) => {
     const userId = req.userId;
     const user = await userModel.findById({ _id: userId });
-    console.log(user, "<-----user fond is");
     if (!user) {
-        return res.status(404).json({ success: false, message: "User not found" });
+        return res.status(404).json({ 
+            statusText: "fail", 
+            message: "User not found" 
+        });
     }
-    console.log(user, "<-----user found");
 
     /** Check if the current user has already hosted a trip */
     if (user.hostingTripId) {
         return res.status(400).json({
-            success: false,
+            statusText: "fail",
             message: "User is already hosting a trip"
         });
     }
@@ -39,39 +40,42 @@ hostRouter.post('/trip', userMiddlware, async (req, res) => {
         price,
         car
     });
-    // const trips = await tripModel.find();
 
     const updatedUser = await userModel.findByIdAndUpdate(
         userId,
         { hostingTripId: creatTripRes._id },
         { new: true }
-    );
+    ).select('-password');
 
     return res.json({
-        success: true,
-        trip: creatTripRes,
-        user: updatedUser
+        statusText: "success",
+        message: "Congrats! Your trip is live now.",
+        data:{
+            trip: creatTripRes,
+            user: updatedUser
+        }
     })
 });
-
 
 // complete a trip
 hostRouter.post('/trip/complete', userMiddlware, async (req, res) => {
     const userId = req.userId;
     const user = await userModel.findById({ _id: userId });
-    console.log(user, "<-----user fond is");
     if (!user) {
-        return res.status(404).json({ success: false, message: "User not found" });
+        return res.status(404).json({ 
+            statusText: "fail", 
+            message: "User not found" 
+        });
     }
-    console.log(user, "<-----user found");
 
     if (!user.hostingTripId) {
         return res.status(400).json({
-            errro: "Bad request: there's none trip to be completed"
+            statusText: "fail",
+            message: "Bad request: there's none trip to be completed."
         })
     };
 
-    const updatedTrip = await tripModel.findByIdAndUpdate(
+    await tripModel.findByIdAndUpdate(
         user.hostingTripId,
         { live: false }
     );
@@ -79,7 +83,7 @@ hostRouter.post('/trip/complete', userMiddlware, async (req, res) => {
     const updatedUser = await userModel.findByIdAndUpdate(
         userId,
         { hostingTripId: null }
-    );
+    ).select('-password');
 
     return res.json({
         success: true,

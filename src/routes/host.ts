@@ -1,11 +1,11 @@
-const { Router } = require("express");
-const { tripModel, userModel } = require("../db");
-const { userMiddlware } = require("../middleware/userMiddleware");
+import { Response, Router } from "express";
+import { AuthRequest, userMiddleware } from "../middleware/userMiddleware";
+import { tripModel, userModel } from "../db";
 
 const hostRouter = Router();
 
 // create a trip
-hostRouter.post('/trip', userMiddlware, async (req, res) => {
+hostRouter.post('/trip', userMiddleware, async (req:AuthRequest, res:Response):Promise<any> => {
     const userId = req.userId;
     const user = await userModel.findById({ _id: userId });
     if (!user) {
@@ -58,7 +58,7 @@ hostRouter.post('/trip', userMiddlware, async (req, res) => {
 });
 
 // complete a trip
-hostRouter.post('/trip/complete', userMiddlware, async (req, res) => {
+hostRouter.post('/trip/complete', userMiddlware, async (req:AuthRequest, res:Response):Promise<any> => {
     const userId = req.userId;
     const user = await userModel.findById({ _id: userId });
     if (!user) {
@@ -93,6 +93,6 @@ hostRouter.post('/trip/complete', userMiddlware, async (req, res) => {
 
 });
 
-module.exports = {
+export {
     hostRouter
 };

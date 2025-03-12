@@ -1,9 +1,6 @@
-const mongoose = require("mongoose");
-const { boolean } = require("zod");
+import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
-const ObjectId = mongoose.Types.ObjectId;
-
 
 const userSchema = new Schema({
     email: { type: String, unique: false, match: /.+\@.+\..+/ },
@@ -87,7 +84,7 @@ tripSchema.set('toJSON', { virtuals: true });
 const userModel = mongoose.model("User", userSchema);
 const tripModel = mongoose.model("Trip", tripSchema);
 
-module.exports = {
+export {
     userModel,
     tripModel
-}
+};

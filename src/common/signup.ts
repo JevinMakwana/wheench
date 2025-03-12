@@ -1,9 +1,11 @@
-const bcrypt = require("bcrypt"); // Assuming bcrypt is needed for password hashing
-const { zodCheck } = require("../utils/formatchecker");
-const jwt = require('jsonwebtoken');
-const { JWT_USER_SECRET } = require("../config");
+import bcrypt from "bcrypt"; // Assuming bcrypt is needed for password hashing
+import jwt from "jsonwebtoken";
+import { JWT_USER_SECRET } from "../config.js";
+import { zodCheck } from "../utils/formatchecker.js";
+import { userModel } from "../db.js";
 
-const signup = async (req, model) => {
+
+const signup = async (req:any):Promise<any> => {
     // Parse and validate the request body
     const formattedData = await zodCheck(req.body);
 
@@ -15,10 +17,10 @@ const signup = async (req, model) => {
     }
 
     try {
-        const { email, password, username, full_name, phone, gender } = req.body;
+        const { email, password, username, full_name, phone, gender } = req.body as any;
 
         // Check if email already exists
-        const isEmailAlreadyExist = await model.findOne({ email });
+        const isEmailAlreadyExist = await userModel.findOne({ email });
         if (isEmailAlreadyExist) {
             return {
                 status: 409,
@@ -32,7 +34,7 @@ const signup = async (req, model) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         // Create the user in the database
-        const newUser = await model.create({
+        const newUser = await userModel.create({
             email,
             password: hashedPassword,
             username,
@@ -40,12 +42,11 @@ const signup = async (req, model) => {
             phone,
             gender
         });
+
         const userData = newUser.toObject();
         delete userData.password; // Manually remove password
 
-        const token = jwt.sign({
-            id: userData._id.toString()
-        }, JWT_USER_SECRET);
+        const token = jwt.sign({ id: userData._id.toString() }, JWT_USER_SECRET);
 
         return {
             statusText: "success",
@@ -55,15 +56,13 @@ const signup = async (req, model) => {
                 user: userData
             }
         };
-    } catch (error) {
+    } catch (error:any) {
         return {
             statusText: "fail",
             message: "Internal server error. Please try again later or contact support.",
-            error: error.message ?? "" // Include error details for debugging in dev environments
+            error: error.message || "" // Include error details for debugging in dev environments
         };
     }
 };
 
-module.exports = {
-    signup
-};
+export { signup };

@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { tripModel } from "../db.js";
+import { tripModel } from "../db";
 
 const tripRouter = Router();
 

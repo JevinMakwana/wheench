@@ -1,12 +1,12 @@
-const { Router } = require("express");
-const { userMiddlware } = require("../middleware/userMiddleware");
-const { tripModel, userModel } = require("../db");
-const { default: mongoose } = require("mongoose");
+import { Router } from "express";
+import { userMiddleware } from "../middleware/userMiddleware";
+import { tripModel, userModel } from "../db";
+import mongoose from "mongoose";
 
 const guestRouter = Router();
 
 // book a seat
-guestRouter.post('/book', userMiddlware, async (req, res) => {
+guestRouter.post('/book', userMiddleware, async (req:any, res:any) => {
     try {
         const userId = req.userId;
         const user = await userModel.findById(userId);
@@ -28,7 +28,7 @@ guestRouter.post('/book', userMiddlware, async (req, res) => {
         }
 
         // Fetch the trip details
-        const trip = await tripModel.findById(tripId);
+        const trip:any = await tripModel.findById(tripId);
         
         if (!trip) {
             return res.status(404).json({ 
@@ -77,7 +77,7 @@ guestRouter.post('/book', userMiddlware, async (req, res) => {
             message: "Seat booked successfully",
             data: trip
         });
-    } catch (error) {
+    } catch (error:any) {
         console.error("Error booking seat:", error);
         return res.status(500).json({
             statusText: "fail",
@@ -87,6 +87,6 @@ guestRouter.post('/book', userMiddlware, async (req, res) => {
     }
 });
 
-module.exports = {
+export {
     guestRouter
 }

@@ -1,9 +1,9 @@
 import { Request, Response, Router } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { userModel } from "../db.js";
-import { signup } from "../common/signup.js";
-import { JWT_USER_SECRET } from "../config.js";
+import { userModel } from "../db";
+import { signup } from "../common/signup";
+import { JWT_USER_SECRET } from "../config";
 import { Types } from "mongoose";
 
 const authRouter = Router();
@@ -29,7 +29,7 @@ authRouter.post('/signup', async (req:Request, res:Response):Promise<any> => {
         });
     }
     return res.json({
-        statusText: "success",
+                statusText: "success",
         message: signupResponse.message,
         data: signupResponse.data
     });

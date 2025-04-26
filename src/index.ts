@@ -8,6 +8,7 @@ import { authRouter } from "./routes/auth";
 import { userRouter } from "./routes/user";
 import { hostRouter } from "./routes/host";
 import { tripRouter } from "./routes/trip";
+import { guestRouter } from "./routes/guest";
 
 
 const app = express();

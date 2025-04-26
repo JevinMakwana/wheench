@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt"; // Assuming bcrypt is needed for password hashing
 import jwt from "jsonwebtoken";
-import { JWT_USER_SECRET } from "../config.js";
-import { zodCheck } from "../utils/formatchecker.js";
-import { userModel } from "../db.js";
+import { JWT_USER_SECRET } from "../config";
+import { zodCheck } from "../utils/formatchecker";
+import { userModel } from "../db";
 
 
 const signup = async (req:any):Promise<any> => {

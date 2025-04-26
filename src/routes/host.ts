@@ -58,7 +58,7 @@ hostRouter.post('/trip', userMiddleware, async (req:AuthRequest, res:Response):P
 });
 
 // complete a trip
-hostRouter.post('/trip/complete', userMiddlware, async (req:AuthRequest, res:Response):Promise<any> => {
+hostRouter.post('/trip/complete', userMiddleware, async (req:AuthRequest, res:Response):Promise<any> => {
     const userId = req.userId;
     const user = await userModel.findById({ _id: userId });
     if (!user) {
